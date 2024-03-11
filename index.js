@@ -11,7 +11,7 @@ connectMongoDB("mongodb+srv://bansalsid2000:eucZB1kvKz2YgoPb@cluster0.1q28hsg.mo
 app.use(express.urlencoded({extended:false}))
 app.use(cookieParser());
 app.use(express.json());
-//app.use(cors());
+//napp.use(cors());
 
 app.use( (req,res,next)=>{
     console.log("hello from middleware");

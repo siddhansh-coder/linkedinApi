@@ -25,7 +25,11 @@ async function handelUserlogin(req,res){
     // res.cookie("uid" , sessionId);
     const token = setUser(user);
     res.cookie("uid",token);
-    return res.send("login successfull");
+    user.numberOfTimesLoggedIn = user.numberOfTimesLoggedIn ? Number(user.numberOfTimesLoggedIn) + 1 : 1;
+
+    user.save()
+    console.log("user" + user);
+    return res.status(200).send(user.numberOfTimesLoggedIn + "login successfull");
 
     // for jwt tokens
 
