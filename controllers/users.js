@@ -20,9 +20,14 @@ async function handelUserlogin(req,res){
     const {email , password} = req.body;
     const user = await User.findOne({email,password})
     if(!user) return res.send("invalid email or password");
-    const sessionId = uuidv4();
-    setUser(sessionId,user);
-    res.cookie("uid" , sessionId);
+    // const sessionId = uuidv4();
+    // setUser(sessionId,user);
+    // res.cookie("uid" , sessionId);
+    const token = setUser(user);
+    res.cookie("uid",token);
     return res.send("login successfull");
-}
+
+    // for jwt tokens
+
+ }
 module.exports = {handelUserSignup , handelUserlogin};
