@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const {connectMongoDB} = require("./connect");
 const PORT = 9000;
-const users = require("./mock.json");
-const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const {restrictToLoggedinUsersOnly} = require("./middleWares/auth");
 
@@ -11,7 +9,7 @@ connectMongoDB("mongodb+srv://bansalsid2000:eucZB1kvKz2YgoPb@cluster0.1q28hsg.mo
 app.use(express.urlencoded({extended:false}))
 app.use(cookieParser());
 app.use(express.json());
-//napp.use(cors());
+//app.use(cors());
 
 app.use( (req,res,next)=>{
     console.log("hello from middleware");
@@ -19,7 +17,6 @@ app.use( (req,res,next)=>{
     next();
 })
 
-// here
 const userRouter = require("./routes/users");
 app.use("/users" , userRouter);
 

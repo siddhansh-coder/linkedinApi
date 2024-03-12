@@ -20,9 +20,6 @@ async function handelUserlogin(req,res){
     const {email , password} = req.body;
     const user = await User.findOne({email,password})
     if(!user) return res.send("invalid email or password");
-    // const sessionId = uuidv4();
-    // setUser(sessionId,user);
-    // res.cookie("uid" , sessionId);
     const token = setUser(user);
     res.cookie("uid",token);
     user.numberOfTimesLoggedIn = user.numberOfTimesLoggedIn ? Number(user.numberOfTimesLoggedIn) + 1 : 1;
@@ -31,7 +28,17 @@ async function handelUserlogin(req,res){
     console.log("user" + user);
     return res.status(200).send(user.numberOfTimesLoggedIn + "login successfull");
 
-    // for jwt tokens
+ }
+
+ async function handelChangeEmailOrPhoneNumber(req,res)
+ {
+    const{email , newEmail} = req.body;
+    console.log("body for email change" + JSON.stringify(req.body) + "previous email" + email);
+    const user = await User.findOne({email});
+    if(!email) res.send("invalid email");
+    console.log("user after email" + user);
+    user.email = newEmail;
+    res.send("email changed" + user);
 
  }
-module.exports = {handelUserSignup , handelUserlogin};
+module.exports = {handelUserSignup , handelUserlogin ,handelChangeEmailOrPhoneNumber};
