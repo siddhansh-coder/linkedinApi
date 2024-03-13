@@ -59,4 +59,11 @@ async function handelUserlogin(req,res){
     if(!user) res.send("wrong email address");
     res.send("details of user are"  + user);
 }
-module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber , handelGetUsers};
+
+async function handelAllUsers(req,res)
+{
+    const user = await User.find({});
+    if(!user) res.send("wrong email address");
+    res.send("details of all user are"  + user);
+}
+module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber , handelGetUsers , handelAllUsers};
