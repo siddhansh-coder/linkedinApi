@@ -51,4 +51,12 @@ async function handelUserlogin(req,res){
     res.send("phone number changed" + user);
 
  }
-module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber};
+
+ async function handelGetUsers(req,res)
+{
+    const {email} = req.body;
+    const user = await User.findOne({email});
+    if(!user) res.send("wrong email address");
+    res.send("details of user are"  + user);
+}
+module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber , handelGetUsers};
