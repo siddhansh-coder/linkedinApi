@@ -30,15 +30,25 @@ async function handelUserlogin(req,res){
 
  }
 
- async function handelChangeEmailOrPhoneNumber(req,res)
+ async function changeEmail(req,res)
  {
     const{email , newEmail} = req.body;
     console.log("body for email change" + JSON.stringify(req.body) + "previous email" + email);
     const user = await User.findOne({email});
-    if(!email) res.send("invalid email");
+    if(!user) res.send("invalid email");
     console.log("user after email" + user);
     user.email = newEmail;
     res.send("email changed" + user);
 
  }
-module.exports = {handelUserSignup , handelUserlogin ,handelChangeEmailOrPhoneNumber};
+
+ async function changePhoneNumber(req,res)
+ {
+    const{phoneNumber,newPhoneNumber} = req.body;
+    const user = await User.findOne({phoneNumber});
+    if(!user) res.send("invalid phoneNumber");
+    user.phoneNumber = newPhoneNumber;
+    res.send("phone number changed" + user);
+
+ }
+module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber};
