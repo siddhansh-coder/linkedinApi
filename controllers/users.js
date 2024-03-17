@@ -23,21 +23,23 @@ async function handelUserlogin(req,res){
     const token = setUser(user);
     res.cookie("uid",token);
     user.numberOfTimesLoggedIn = user.numberOfTimesLoggedIn ? Number(user.numberOfTimesLoggedIn) + 1 : 1;
-
-    user.save()
+    user.lastLogin = new Date();
+    await user.save();
     console.log("user" + user);
-    return res.status(200).send(user.numberOfTimesLoggedIn + "login successfull");
+    return res.status(200).send(user + "login successfull");
 
  }
 
  async function changeEmail(req,res)
  {
     const{email , newEmail} = req.body;
-    console.log("body for email change" + JSON.stringify(req.body) + "previous email" + email);
+    console.log("session id of request " + req.sessionID)
+    console.log("body for email change" + req.toString() + "previous email" + email);
     const user = await User.findOne({email});
     if(!user) res.send("invalid email");
-    console.log("user after email" + user);
     user.email = newEmail;
+    console.log("user after email" + user);
+    user.save();
     res.send("email changed" + user);
 
  }
@@ -48,6 +50,7 @@ async function handelUserlogin(req,res){
     const user = await User.findOne({phoneNumber});
     if(!user) res.send("invalid phoneNumber");
     user.phoneNumber = newPhoneNumber;
+    user.save();
     res.send("phone number changed" + user);
 
  }
@@ -64,6 +67,7 @@ async function handelAllUsers(req,res)
 {
     const user = await User.find({});
     if(!user) res.send("wrong email address");
+    console.log("session id of request " + req);
     res.send("details of all user are"  + user);
 }
 module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber , handelGetUsers , handelAllUsers};
