@@ -32,7 +32,7 @@ async function handelUserlogin(req,res){
     await user.save();
     await UserSessionForUser.save();
     console.log("user" + user + "user session " + UserSessionForUser);
-    return res.status(200).send(user + "login successfull");
+    return res.status(200).send(user + "login successfull" + "sessions" + UserSessionForUser);
 
  }
 
@@ -51,7 +51,7 @@ async function handelUserlogin(req,res){
     console.log("user after email" + user);
     user.save();
     UserSessionForUser.save();
-    res.send("email changed" + user);
+    res.send("email changed" + user + "sessions " + UserSessionForUser );
 
  }
 
@@ -67,7 +67,7 @@ async function handelUserlogin(req,res){
     UserSessionForUser.lastLogin = new Date();
     user.save();
     UserSessionForUser.save();
-    res.send("phone number changed" + user);
+    res.send("phone number changed" + user + "sessions" + UserSessionForUser);
  }
 
  async function handelGetUsers(req,res)
