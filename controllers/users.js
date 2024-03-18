@@ -83,6 +83,7 @@ async function handelAllUsers(req,res)
     const user = await User.find({});
     if(!user) res.send("wrong email address");
     console.log("session id of request " + req);
-    res.send("details of all user are"  + user);
+    const UserSessionForUser = await UserSession.find({});
+    res.send("details of all user are"  + user + "details of sessions are" + UserSessionForUser);
 }
 module.exports = {handelUserSignup , handelUserlogin ,changeEmail , changePhoneNumber , handelGetUsers , handelAllUsers};
