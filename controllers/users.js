@@ -26,7 +26,10 @@ async function handelUserlogin(req,res){
     await  UserSession.create({
         username
     })
+    console.log("session  for user is " + JSON.stringify(req.session));
+    console.log("session id for user is " + JSON.stringify(req.sessionID)); //_NSgb6FGdICo-xwzqiVh9_24Me6TzQ13
     const UserSessionForUser = await UserSession.findOne({username});
+    if(!UserSessionForUser) res.send("user not loggedIn");
     UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
     UserSessionForUser.lastLogin = new Date();
     await user.save();
@@ -45,7 +48,8 @@ async function handelUserlogin(req,res){
     if(!user) res.send("invalid email");
     const username = user.username;
     const UserSessionForUser = await UserSession.findOne({username});
-    UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
+    if(!UserSessionForUser) res.send("user not loggedIn");
+    UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
     UserSessionForUser.lastLogin = new Date();
     user.email = newEmail;
     console.log("user after email" + user);
