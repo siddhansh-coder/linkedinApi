@@ -27,24 +27,23 @@ async function handelUserlogin(req,res){
     await  UserSession.create({
         username
     })
-    //console.log("session  for user is " + JSON.stringify(req.session));
-    //console.log("session id for user is " + JSON.stringify(req.sessionID)); //_NSgb6FGdICo-xwzqiVh9_24Me6TzQ13
     const UserSessionForUser = await UserSession.findOne({username});
+    console.log("this is console in handle login" + UserSessionForUser);
     if(!UserSessionForUser) res.send("user not loggedIn");
     UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
     UserSessionForUser.lastLogin = new Date();
     UserSessionForUser.activity = "Login";
     await user.save();
-    await UserSessionForUser.save();
+    //await UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
     console.log("this is console under handler for request...." + req.body);
     console.log("user" + user + "user session " + UserSessionForUser);
     return res.status(200).send(user + "login successfull" + "sessions" + UserSessionForUser );
 
- }
+}
 
- async function changeEmail(req,res)
- {
+async function changeEmail(req,res)
+{
     const{email , newEmail} = req.body;
     console.log("session id of request " + req.sessionID)
     console.log("body for email change" + req.toString() + "previous email" + email);
@@ -59,14 +58,14 @@ async function handelUserlogin(req,res){
     user.email = newEmail;
     console.log("user after email" + user);
     user.save();
-    UserSessionForUser.save();
+   // UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
     res.send("email changed" + user + "sessions " + UserSessionForUser );
 
- }
+}
 
  async function changePhoneNumber(req,res)
- {
+{
     const{phoneNumber,newPhoneNumber} = req.body;
     const user = await User.findOne({phoneNumber});
     if(!user) res.send("invalid phoneNumber");
@@ -77,10 +76,10 @@ async function handelUserlogin(req,res){
     UserSessionForUser.lastLogin = new Date();
     UserSessionForUser.activity = "changePhoneNumber";
     user.save();
-    UserSessionForUser.save();
+    //UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
     res.send("phone number changed" + user + "sessions" + UserSessionForUser);
- }
+}
 
  async function handelGetUsers(req,res)
 {
