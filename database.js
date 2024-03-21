@@ -1,40 +1,60 @@
 const mysql = require('mysql');
 // Create a connection to the MySQL server
+
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'siddhansh',
-  password: 'mu_password',
-  database: 'users'
+  user: 'root',
+  password: 'MySql@1234',
+  database: 'sessions'
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL server: ' + err.stack);
-    return;
-  }
+
+async function connectMySql()
+{
   
-  console.log('Connected to MySQL server as id ' + connection.threadId);
-});
-
-// Perform a query
-connection.query('SELECT * FROM your_table_name', (err, rows) => {
-  if (err) {
-    console.error('Error executing query: ' + err.stack);
-    return;
-  }
-
-  console.log('Data received from MySQL server:');
-  console.log(rows);
-});
+  connection.connect((err) => {
+    if (err) {
+      console.error('Error connecting to MySQL server: ' + err.stack);
+      return;
+    }
+    
+    console.log('Connected to MySQL server as id ' + connection.threadId);
+  });
+}
 
 
+async function dataToInsert(UserSessionForUser)
+{
+  const data = {username: UserSessionForUser.username , numberOfTimesLoggedIn: UserSessionForUser.numberOfTimesLoggedIn , LastLogin: UserSessionForUser.lastLogin, activity: UserSessionForUser.activity, created_at: UserSessionForUser.createdAt, last_updated: UserSessionForUser.updatedAt};
 
-// Close the connection
-connection.end((err) => {
-  if (err) {
-    console.error('Error closing connection: ' + err.stack);
-    return;
-  }
+  console.log("this is console under datatoinsert .......   " + UserSessionForUser + "the data is " + data);
+  connection.query('INSERT INTO userSessions SET?',data, (err, rows) => {
+    if (err) {
+      console.error('Error executing query: ' + err.stack);
+      return;
+    }
 
-  console.log('Connection closed.');
-});
+    console.log('Data inserted into  MySQL server:');
+    console.log(rows);
+  });
+
+}
+
+
+async function disConnectMysql()
+{
+  connection.end((err) => {
+    if (err) {
+      console.error('Error closing connection: ' + err.stack);
+      return;
+    }
+  
+    console.log('Connection closed.');
+  });
+}
+
+
+
+
+
+module.exports = {connectMySql,dataToInsert,disConnectMysql}

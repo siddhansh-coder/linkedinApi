@@ -14,6 +14,7 @@ const userSchemaSession = new mongoose.Schema(
   {
     username: { type: String, required: true },
     numberOfTimesLoggedIn: { type: Number },
+    activity: {type:String},
     lastLogin: {
       type: Date,
       default: Date.now,

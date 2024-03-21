@@ -1,17 +1,21 @@
 const express = require("express");
 const app = express();
 const {connectMongoDB} = require("./connect");
+const {connectMySql,dataToInsert,disConnectMysql} = require("./database");
 const PORT = 9000;
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-
+const cors = require('cors');
 
 connectMongoDB("mongodb+srv://bansalsid2000:eucZB1kvKz2YgoPb@cluster0.1q28hsg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{ useNewUrlParser: true, useUnifiedTopology: true }).then(()=> console.log("mongo db connected"));
+connectMySql();
 app.use(express.urlencoded({extended:false}))
 app.use(cookieParser());
 app.use(express.json());
-//app.use(cors());
+app.use(cors({
+    origin:'*'
+}))
 app.use( (req,res,next)=>{
     console.log("hello from middleware");
     console.log(req.body);

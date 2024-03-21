@@ -1,5 +1,6 @@
 const {User , UserSession } = require("../models/users");
 const {setUser} = require("../service/auth");
+const {connectMySql,dataToInsert,disConnectMysql} = require("../database");
 
 async function handelUserSignup(req,res){
     console.log(req.body) ;
@@ -26,16 +27,19 @@ async function handelUserlogin(req,res){
     await  UserSession.create({
         username
     })
-    console.log("session  for user is " + JSON.stringify(req.session));
-    console.log("session id for user is " + JSON.stringify(req.sessionID)); //_NSgb6FGdICo-xwzqiVh9_24Me6TzQ13
+    //console.log("session  for user is " + JSON.stringify(req.session));
+    //console.log("session id for user is " + JSON.stringify(req.sessionID)); //_NSgb6FGdICo-xwzqiVh9_24Me6TzQ13
     const UserSessionForUser = await UserSession.findOne({username});
     if(!UserSessionForUser) res.send("user not loggedIn");
     UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
     UserSessionForUser.lastLogin = new Date();
+    UserSessionForUser.activity = "Login";
     await user.save();
     await UserSessionForUser.save();
+    dataToInsert(UserSessionForUser);
+    console.log("this is console under handler for request...." + req.body);
     console.log("user" + user + "user session " + UserSessionForUser);
-    return res.status(200).send(user + "login successfull" + "sessions" + UserSessionForUser);
+    return res.status(200).send(user + "login successfull" + "sessions" + UserSessionForUser );
 
  }
 
@@ -51,10 +55,12 @@ async function handelUserlogin(req,res){
     if(!UserSessionForUser) res.send("user not loggedIn");
     UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
     UserSessionForUser.lastLogin = new Date();
+    UserSessionForUser.activity = "changeEmail";
     user.email = newEmail;
     console.log("user after email" + user);
     user.save();
     UserSessionForUser.save();
+    dataToInsert(UserSessionForUser);
     res.send("email changed" + user + "sessions " + UserSessionForUser );
 
  }
@@ -69,8 +75,10 @@ async function handelUserlogin(req,res){
     const UserSessionForUser = await UserSession.findOne({username});
     UserSessionForUser.numberOfTimesLoggedIn = UserSessionForUser.numberOfTimesLoggedIn ? Number(UserSessionForUser.numberOfTimesLoggedIn) + 1 : 1;
     UserSessionForUser.lastLogin = new Date();
+    UserSessionForUser.activity = "changePhoneNumber";
     user.save();
     UserSessionForUser.save();
+    dataToInsert(UserSessionForUser);
     res.send("phone number changed" + user + "sessions" + UserSessionForUser);
  }
 
@@ -79,7 +87,7 @@ async function handelUserlogin(req,res){
     const {email} = req.body;
     const user = await User.findOne({email});
     if(!user) res.send("wrong email address");
-    res.send("details of user are"  + user);
+    res.send(user);
 }
 
 async function handelAllUsers(req,res)
