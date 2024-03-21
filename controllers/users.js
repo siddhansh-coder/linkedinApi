@@ -34,7 +34,7 @@ async function handelUserlogin(req,res){
     UserSessionForUser.lastLogin = new Date();
     UserSessionForUser.activity = "Login";
     await user.save();
-    //await UserSessionForUser.save();
+    await UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
     console.log("this is console under handler for request...." + req.body);
     console.log("user" + user + "user session " + UserSessionForUser);
@@ -58,7 +58,7 @@ async function changeEmail(req,res)
     user.email = newEmail;
     console.log("user after email" + user);
     user.save();
-   // UserSessionForUser.save();
+    UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
     res.send("email changed" + user + "sessions " + UserSessionForUser );
 
@@ -76,7 +76,7 @@ async function changeEmail(req,res)
     UserSessionForUser.lastLogin = new Date();
     UserSessionForUser.activity = "changePhoneNumber";
     user.save();
-    //UserSessionForUser.save();
+    UserSessionForUser.save();
     dataToInsert(UserSessionForUser);
     res.send("phone number changed" + user + "sessions" + UserSessionForUser);
 }
