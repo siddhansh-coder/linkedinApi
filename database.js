@@ -11,15 +11,20 @@ const connection = mysql.createConnection({
 
 async function connectMySql()
 {
-  
+  try{
   connection.connect((err) => {
     if (err) {
       console.error('Error connecting to MySQL server: ' + err.stack);
       return;
     }
-    
+
     console.log('Connected to MySQL server as id ' + connection.threadId);
   });
+}
+catch(err)
+{
+  console.log(err);
+}
 }
 
 
