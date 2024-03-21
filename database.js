@@ -43,11 +43,6 @@ async function dataToInsert(UserSessionForUser)
     console.log(rows);
   });
 
-}
-
-
-async function disConnectMysql()
-{
   connection.end((err) => {
     if (err) {
       console.error('Error closing connection: ' + err.stack);
@@ -56,6 +51,13 @@ async function disConnectMysql()
   
     console.log('Connection closed.');
   });
+
+}
+
+
+async function disConnectMysql()
+{
+
 }
 
 
