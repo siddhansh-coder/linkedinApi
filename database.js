@@ -2,10 +2,10 @@ const mysql = require('mysql');
 // Create a connection to the MySQL server
 
 const connection = mysql.createConnection({
-  host: 'linkedinApi-1',
-  user: 'root',
-  password: 'MySql@1234',
-  database: 'sessions'
+  host: 'sql6.freesqldatabase.com',
+  user: 'sql6693955',
+  password: 'yvEnFL2zyy',
+  database: 'sql6693955'
 });
 
 
