@@ -19,6 +19,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.1",
     "mysql": "^2.18.1",
+    "neo4j": "^2.0.0-RC2",
+    "neo4j-driver": "^5.18.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
