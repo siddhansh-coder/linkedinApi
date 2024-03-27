@@ -9,7 +9,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
 connectMySql();
-createNeoConnection();
+//createNeoConnection();
 connectMongoDB("mongodb+srv://bansalsid2000:eucZB1kvKz2YgoPb@cluster0.1q28hsg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{ useNewUrlParser: true, useUnifiedTopology: true }).then(()=> console.log("mongo db connected"));
 app.use(cors({
     origin: '*'
