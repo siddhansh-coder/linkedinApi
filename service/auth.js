@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const secretKey = "sid@123";
-const sessionIdTOUseMap = new Map();
 
 function setUser(user)
 {
