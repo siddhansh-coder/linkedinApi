@@ -1,5 +1,5 @@
 const {User , UserSession } = require("../models/users");
-const {setUser} = require("../service/auth");
+const {setUser,getUser} = require("../service/auth");
 const {connectMySql,dataToInsert,disConnectMysql} = require("../database");
 
 async function handelUserSignup(req,res){
@@ -19,14 +19,18 @@ async function handelUserSignup(req,res){
 async function handelUserlogin(req,res){
     console.log(req.body) ;
     const {email , password} = req.body;
+    const reqToken = req.cookies.token;
+    if(reqToken) {const auth = getUser(reqToken);}
+    
+
     const user = await User.findOne({email,password})
     if(!user) return res.send("invalid email or password");
     const token = setUser(user);
-    res.cookie("uid",token);
     const username = user.username;
     await  UserSession.create({
         username
     })
+    console.log("this is console for sessions " + res.cookie);
     const UserSessionForUser = await UserSession.findOne({username});
     console.log("this is console in handle login" + UserSessionForUser);
     if(!UserSessionForUser) res.send("user not loggedIn");
@@ -38,7 +42,7 @@ async function handelUserlogin(req,res){
     dataToInsert(UserSessionForUser);
     console.log("this is console under handler for request...." + req.body);
     console.log("user" + user + "user session " + UserSessionForUser);
-    return res.status(200).send(user + "login successfull" + "sessions" + UserSessionForUser );
+    return res.status(200).send(token);
 
 }
 
